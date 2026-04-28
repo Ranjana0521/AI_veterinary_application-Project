@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Animal Record</title>
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #c9ffbf, #ffafbd);
+  text-align: center;
+  padding-top: 40px;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: "🐄 🐕 🐈 🐘 🐓 🦌";
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 80px;
+  opacity: 0.15;
+  animation: float 8s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+  from { transform: translate(-50%, 0px); }
+  to { transform: translate(-50%, 20px); }
+}
+
+.card {
+  display: inline-block;
+  background: white;
+  padding: 30px 80px;
+  border-radius: 25px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  max-width: 800px;
+  width: 90%;
+  text-align: left;
+}
+
+.vaccine-box {
+  margin-top: 25px;
+  padding: 20px;
+  background: #f1faff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.v-section {
+  padding: 15px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.v-section h4 {
+  margin-bottom: 12px;
+  color: #0077b6;
+}
+
+.add-btn {
+  margin-top: 10px;
+  padding: 8px 14px;
+  border: none;
+  font-size: 14px;
+  background: #38b000;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.add-btn:hover {
+  background: #2a8500;
+}
+
+.hidden-box {
+  display: none;
+  margin-top: 15px;
+}
+
+button {
+  background: #0077b6;
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+button:hover {
+  background: #023e8a;
+}
+
+.star-btn {
+  background: gold;
+  color: black;
+  margin-top: 10px;
+  padding: 6px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.star-btn:hover { background: #e0b200; }
+
+</style>
+</head>
+<body>
+
+<div style="font-size:70px;">🐴🐘🐤🦌</div>
+<h2>Animal Health Record</h2>
+
+{% if found %}
+<div class="card">
+
+  <h3>
+      Animal ID: {{ data['Animal ID'] }}
+      {% if special == 'yes' %}
+      <span style="color:gold; font-size:28px;">⭐</span>
+      {% endif %}
+  </h3>
+
+  <p><b>Name:</b> {{ data['Name'] }}</p>
+  <p><b>Breed:</b> {{ data['Breed'] }}</p>
+  <p><b>Age:</b> {{ data['Age (years)'] }}</p>
+  <p><b>BP:</b> {{ data['BP'] }}</p>
+  <p><b>Heart Rate:</b> {{ data['Heart Rate (bpm)'] }}</p>
+  <p><b>Oxygen:</b> {{ data['Oxygen Saturation (%)'] }}</p>
+
+  <p><b>Symptoms:</b> {{ data['Symptom 1'] }}, {{ data['Symptom 2'] }}</p>
+
+  <p><b>Detected Disease:</b> 🧬 <b>{{ prediction }}</b></p>
+  <p><b>Model Accuracy:</b> {{ accuracy }}%</p>
+
+  <button class="star-btn" onclick="window.location.href='/mark_special/{{ data['Animal ID'] }}'">
+      {% if special == 'yes' %}Remove ⭐{% else %}Mark ⭐ Special Care{% endif %}
+  </button>
+
+  <button onclick="window.location.href='/generate_pdf/{{ data['Animal ID'] }}'">
+      📄 Generate PDF Report
+  </button>
+
+  <hr>
+
+  <!-- ⭐ Vaccination Section ⭐ -->
+  <div class="vaccine-box">
+      <div class="v-section">
+
+          <h4>💉 Vaccination History</h4>
+
+          <p><b>1)</b> {{ data['Vaccination 1'] }}</p>
+          <p><b>2)</b> {{ data['Vaccination 2'] }}</p>
+
+          <button class="add-btn" onclick="document.getElementById('vaccineForm').style.display='block'">
+              + Add Vaccination
+          </button>
+
+          <form id="vaccineForm" class="hidden-box" method="POST" action="/add_vaccine">
+              <input type="hidden" name="animal_id" value="{{ data['Animal ID'] }}">
+              <input type="text" name="new_vaccine" placeholder="Enter Vaccine Name" required><br><br>
+              <input type="date" name="vaccine_date" required><br><br>
+              <button type="submit" class="add-btn">Save Vaccine</button>
+          </form>
+
+      </div>
+  </div>
+
+  <hr>
+
+  <!-- Update Symptoms -->
+  <form method="POST">
+      <input type="text" name="Symptom1" placeholder="Update Symptom 1"><br><br>
+      <input type="text" name="Symptom2" placeholder="Update Symptom 2"><br><br>
+      <input type="text" name="suggestion" placeholder="Doctor Suggestion"><br><br>
+      <button type="submit">💾 Save</button>
+  </form>
+
+</div>
+
+{% else %}
+<h3>⚠️ No record found for Animal ID: {{ animal_id }}</h3>
+{% endif %}
+
+</body>
+</html>

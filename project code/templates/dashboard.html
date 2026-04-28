@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>🐾 Animal Health Dashboard</title>
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: linear-gradient(135deg, #c9ffbf, #ffafbd);
+  background-image:
+    url('https://twemoji.maxcdn.com/v/latest/svg/1f404.svg'),
+    url('https://twemoji.maxcdn.com/v/latest/svg/1f42e.svg'),
+    url('https://twemoji.maxcdn.com/v/latest/svg/1f410.svg'),
+    url('https://twemoji.maxcdn.com/v/latest/svg/1f411.svg'),
+    url('https://twemoji.maxcdn.com/v/latest/svg/1f42a.svg');
+  background-repeat: no-repeat;
+  background-size: 70px, 60px, 65px, 55px, 75px;
+  background-position: 10% 20%, 80% 30%, 20% 80%, 70% 75%, 50% 10%;
+  color: #004c70;
+  text-align: center;
+}
+
+/* 🧱 Dashboard Box */
+.container {
+  background: rgba(255,255,255,0.88);
+  padding: 50px 70px;
+  border-radius: 20px;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.2);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  color: #004c70;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+p {
+  font-size: 18px;
+  margin-bottom: 25px;
+  color: #005f8c;
+}
+
+/* Input box */
+.input-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  width: 250px;
+  border-radius: 8px;
+  border: 1px solid #0077b6;
+  margin-bottom: 15px;
+  font-size: 16px;
+  text-align: center;
+}
+
+button {
+  background: #0077b6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: #005f8c;
+  transform: scale(1.05);
+}
+
+/* Dashboard links */
+a {
+  text-decoration: none;
+  color: white;
+  background: #0077b6;
+  display: block;
+  padding: 12px 25px;
+  border-radius: 10px;
+  margin: 8px auto;
+  font-size: 18px;
+  width: 240px;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  background: #005f8c;
+  transform: scale(1.05);
+}
+
+/* 🤖 Chatbot styles */
+.chat-box {
+  position: fixed;
+  right: -35%;
+  bottom: 90px;
+  width: 280px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  border-radius: 18px;
+  padding: 18px;
+  transition: right 0.4s ease;
+  z-index: 1000;
+}
+
+.chat-box.open {
+  right: 2%;
+}
+
+.chat-box h2 {
+  text-align: center;
+  color: #004c70;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.chat-box form input,
+.chat-box form textarea {
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  border: 1px solid #999;
+  font-size: 13px;
+}
+
+.chat-box button {
+  width: 100%;
+  background: #0077b6;
+  color: white;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+.chat-box button:hover {
+  background: #005f8c;
+}
+
+.prediction-box {
+  margin-top: 8px;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* Floating Chat Toggle */
+.chat-toggle {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: #0077b6;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+  z-index: 1100;
+}
+
+.chat-toggle:hover {
+  background: #005f8c;
+  transform: scale(1.1);
+}
+</style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>🐮 Welcome to Animal Health Dashboard</h1>
+    <p>Search animal record or perform an action:</p>
+
+    <div class="input-box">
+      <form action="/display" method="get">
+        <input type="text" name="animal_id" placeholder="Enter Animal ID" required>
+        <button type="submit">🔍 View Animal Record</button>
+      </form>
+    </div>
+
+    <!-- ✅ Scan button works correctly -->
+    <a href="/scan">📷 Scan Animal</a>
+    <a href="/">🚪 Logout</a>
+  </div>
+
+  <!-- 🤖 Chatbot -->
+  <div class="chat-box" id="chatbox">
+    <h2>🤖 Smart Health Bot</h2>
+    <form method="POST" action="/chat">
+      <input type="text" name="animal_id" placeholder="Animal ID" required>
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="text" name="breed" placeholder="Breed" required>
+      <input type="number" step="0.1" name="age" placeholder="Age (years)" required>
+      <input type="number" step="0.1" name="oxygen" placeholder="Oxygen Level (%)" required>
+      <input type="text" name="bp" placeholder="BP (mmHg)" required>
+      <input type="number" step="0.1" name="hr" placeholder="Heart Rate (bpm)" required>
+      <input type="text" name="symptom1" placeholder="Symptom 1" required>
+      <input type="text" name="symptom2" placeholder="Symptom 2">
+      <button type="submit">🔍 Predict Disease</button>
+    </form>
+
+    <div class="prediction-box">
+      <p><b>Prediction:</b> {{ prediction }}</p>
+      <p><b>Disease:</b> {{ disease }}</p>
+      <p><b>Accuracy:</b> {{ accuracy }}</p>
+
+      {% if prediction == "Healthy" %}
+        <p style="color:green;">🟢 The animal appears healthy.</p>
+      {% elif prediction %}
+        <p style="color:red;">🔴 The animal may need medical attention.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Floating Chat Button -->
+  <button class="chat-toggle" id="chatToggle">🤖</button>
+
+  <script>
+    const chatToggle = document.getElementById('chatToggle');
+    const chatBox = document.getElementById('chatbox');
+
+    chatToggle.addEventListener('click', () => {
+      chatBox.classList.toggle('open');
+    });
+  </script>
+
+</body>
+</html>

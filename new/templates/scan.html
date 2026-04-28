@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Scanner</title>
+    <style>
+        body { text-align:center; font-family: Arial; padding: 20px; }
+        video { width:300px; height:220px; border:2px solid #333; border-radius:8px; }
+        #result { margin-top:20px; font-size:20px; font-weight:bold; color:blue; }
+        .back-btn { margin-top:20px; display:inline-block; padding:10px 20px; background:#007bff; color:white; text-decoration:none; border-radius:6px; }
+        .back-btn:hover { background:#0056b3; }
+    </style>
+</head>
+<body>
+    <h2>QR Scanner</h2>
+    <video id="camera" autoplay></video>
+    <p id="result">Scan a QR code...</p>
+    <a href="/" class="back-btn">⬅ Back to Dashboard</a>
+
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+    <script>
+        const video = document.getElementById('camera');
+        const result = document.getElementById('result');
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+            .then(stream => { video.srcObject = stream; })
+            .catch(err => { alert("Camera error: " + err); });
+
+        function scan() {
+            if(video.readyState === video.HAVE_ENOUGH_DATA){
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                ctx.drawImage(video,0,0,canvas.width,canvas.height);
+                const imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
+                const code = jsQR(imageData.data, canvas.width, canvas.height);
+                if(code){ result.textContent = "Detected ID: " + code.data; }
+            }
+            requestAnimationFrame(scan);
+        }
+
+        scan();
+    </script>
+</body>
+</html>

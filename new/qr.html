@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+</head>
+<body>
+
+<div id="qrcode"></div>
+
+<script>
+    var animalId = "345"; // dynamic ID
+    new QRCode(document.getElementById("qrcode"), animalId);
+</script>
+
+</body>
+</html>

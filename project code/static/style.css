@@ -1,0 +1,87 @@
+/* --- (All the previous CSS is the same) --- */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    background-color: #ffffff;
+    padding: 2rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+h1 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+p {
+    color: #7f8c8d;
+    margin-bottom: 2rem;
+}
+form {
+    display: flex;
+    flex-direction: column;
+}
+label {
+    text-align: left;
+    margin-top: 1rem;
+    font-weight: bold;
+    color: #34495e;
+}
+input, select {
+    padding: 0.8rem;
+    margin-top: 0.5rem;
+    border: 1px solid #bdc3c7;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+button {
+    margin-top: 2rem;
+    padding: 0.9rem;
+    background-color: #3498db; /* Changed color for a 'health' feel */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+button:hover {
+    background-color: #2980b9;
+}
+.result {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: #eaf6ff;
+    border-left: 5px solid #3498db;
+    border-radius: 6px;
+    text-align: left;
+}
+
+/* --- NEW CSS for the 3 predictions --- */
+.result h2.disease-prediction {
+    margin: 0;
+    color: #2c3e50;
+    font-weight: 700; /* Bolder for main prediction */
+}
+.result p.survival-prediction {
+    margin: 0.5rem 0 0 0;
+    font-size: 1.1rem;
+    color: #333;
+}
+.result p.chance-prediction {
+    margin: 0.25rem 0 0 0;
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 600;
+}

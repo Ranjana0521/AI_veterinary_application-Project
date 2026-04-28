@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reset Password</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #0d1b26;
+      font-family: Arial, sans-serif;
+      color: #f2f2f2;
+    }
+
+    .box {
+      background: #132d3d;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.4);
+      width: 340px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 22px;
+      color: #00d4ff;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 6px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      background: #00d4ff;
+      color: #0d1b26;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #00aacc;
+    }
+
+    .error {
+      color: #ff4d4d;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h2>Reset Password</h2>
+    <form id="resetForm">
+      <input type="text" id="doctorId" placeholder="Enter Doctor ID" required>
+      <input type="password" id="newPassword" placeholder="Enter New Password" required>
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+      <p class="error" id="errorMsg"></p>
+      <button type="submit">Reset</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("resetForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      let doctorId = document.getElementById("doctorId").value;
+      let newPass = document.getElementById("newPassword").value;
+      let confirmPass = document.getElementById("confirmPassword").value;
+      let errorMsg = document.getElementById("errorMsg");
+
+      if(newPass !== confirmPass){
+        errorMsg.textContent = "Passwords do not match!";
+        return;
+      }
+
+      // Store credentials in localStorage (for demo purpose only)
+      localStorage.setItem("doctorId", doctorId);
+      localStorage.setItem("password", newPass);
+
+      alert("Password reset successfully!");
+      window.location.href = "1login.html";
+    });
+  </script>
+
+</body>
+</html>

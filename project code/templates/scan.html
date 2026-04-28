@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scan QR Code</title>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #d4fc79, #96e6a1);
+            height: 100vh;
+            margin: 0;
+            padding-top: 50px;
+        }
+        #reader {
+            width: 350px;
+            margin: 20px auto;
+            border: 2px solid #0077b6;
+            border-radius: 12px;
+            background: white;
+            padding: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #0077b6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #023e8a;
+        }
+    </style>
+</head>
+<body>
+    <h1>📷 Scan Animal QR Code</h1>
+    <p>Align the QR code within the frame below.</p>
+
+    <div id="reader"></div>
+
+    <br>
+    <button onclick="stopScan()">Stop Scanning</button>
+    <br><br>
+    <a href="/" style="text-decoration:none; color:#023e8a;">⬅ Back to Dashboard</a>
+
+    <script>
+        let html5QrCode;
+
+        function onScanSuccess(decodedText) {
+            console.log(`QR Code detected: ${decodedText}`);
+            html5QrCode.stop().then(() => {
+                // Redirect to display page with scanned Animal ID
+                window.location.href = `/display?animal_id=${encodeURIComponent(decodedText)}`;
+            });
+        }
+
+        function onScanError(errorMessage) {
+            console.warn(`Scan error: ${errorMessage}`);
+        }
+
+        function startScanner() {
+            html5QrCode = new Html5Qrcode("reader");
+            Html5Qrcode.getCameras().then(devices => {
+                if (devices && devices.length) {
+                    let cameraId = devices[0].id;
+                    html5QrCode.start(
+                        cameraId,
+                        {
+                            fps: 10,
+                            qrbox: 250
+                        },
+                        onScanSuccess,
+                        onScanError
+                    ).catch(err => {
+                        console.error("Camera start error:", err);
+                        alert("Unable to access camera. Please allow camera permissions.");
+                    });
+                } else {
+                    alert("No camera found on this device.");
+                }
+            }).catch(err => alert("Camera access error: " + err));
+        }
+
+        function stopScan() {
+            if (html5QrCode) {
+                html5QrCode.stop().then(() => {
+                    console.log("Scanner stopped.");
+                }).catch(err => console.error("Stop failed:", err));
+            }
+        }
+
+        // 🚀 Auto start the scanner when the page loads
+        window.onload = startScanner;
+    </script>
+</body>
+</html>
